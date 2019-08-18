@@ -3,6 +3,7 @@ import 'package:flutter_jenkins_client/jenkins_client.dart';
 import 'package:flutter_jenkins_client/view.dart';
 import 'package:my_jenkins/global/constant/constants.dart';
 import 'package:my_jenkins/global/tool/collections.dart';
+import 'package:my_jenkins/global/tool/logger.dart';
 
 class ViewsWidget extends StatefulWidget {
   ViewsWidget({Key key}) : super(key: key);
@@ -22,15 +23,21 @@ class _ViewsWidgetState extends State<ViewsWidget> {
   }
 
   _getAllViews() async {
+    logger.i('_ViewsWidgetState\$_getAllViews()');
     try {
       var views = await jenkinsClient.getViews();
-      views.forEach((name, view) {
-        _views.add(view);
+      logger.i('_ViewsWidgetState\$_getAllViews()\$views: $views');
+      setState(() {
+        views.forEach((name, view) {
+          _views.add(view);
+        });
+        _loadingText = '';
       });
-      _loadingText = '';
     } catch (e) {
-      print(e);
-      _loadingText = 'ERROR!';
+      logger.i('_ViewsWidgetState\$_getAllViews()\$e: $e');
+      setState(() {
+        _loadingText = 'ERROR!';
+      });
     }
   }
 
@@ -45,12 +52,9 @@ class _ViewsWidgetState extends State<ViewsWidget> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          Offstage(
-            // 是否显示
-            offstage: _loadingText != '',
-            child: Container(
-              child: Text(_loadingText),
-            ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 8.0),
+            child: Text(_loadingText),
           ),
           ExpansionPanelList(
             expansionCallback: _onViewClick,

@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -6,14 +5,15 @@ import 'package:flutter_jenkins_client/common/util/endecode.dart';
 import 'package:flutter_jenkins_client/jenkins_client.dart';
 
 class HttpClient {
-  static BaseOptions _getBaseOptions(JenkinsClient jenkinsClient, {contentType}) {
+  static BaseOptions _getBaseOptions(JenkinsClient jenkinsClient,
+      {contentType}) {
     if (contentType == null) {
       contentType = ContentType.json;
     }
     return BaseOptions(
       baseUrl: jenkinsClient.url,
       connectTimeout: 5000,
-      receiveTimeout: 100000,
+      receiveTimeout: 10000,
       // 5s
       headers: {
         HttpHeaders.authorizationHeader: EnDecode.encodeBasicAuthToken(
@@ -26,13 +26,11 @@ class HttpClient {
     );
   }
 
-  static Future<Response> get(JenkinsClient jenkinsClient, String path,
-      Map<String, String> params) async {
+  static Future<Response<String>> get(
+      JenkinsClient jenkinsClient, String path, Map<String, String> params) {
+    print('path = $path, params = $params');
     var dio = Dio(_getBaseOptions(jenkinsClient));
 
-    Response<String> response;
-
-    response = await dio.get(path, queryParameters: params);
-    return response;
+    return dio.get(path, queryParameters: params);
   }
 }

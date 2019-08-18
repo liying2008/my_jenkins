@@ -20,6 +20,7 @@ class JenkinsClient {
   JenkinsClient(this.url, this.username, this.password);
 
   Future<Map<String, View>> getViews() async {
+    print('getViews');
     var map = Map<String, View>();
     var params = {'tree': 'views[name,url]'};
     var resp = await HttpClient.get(this, '/api/json', params);
@@ -28,7 +29,7 @@ class JenkinsClient {
     }
     var data = json.decode(resp.data);
     var views = data['views'];
-    views.forEach((viewJson){
+    views.forEach((viewJson) {
       var view = View.fromJson(viewJson);
       map[view.name] = view;
     });
