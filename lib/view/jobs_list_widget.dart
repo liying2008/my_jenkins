@@ -29,15 +29,15 @@ class _JobsListWidgetState extends State<JobsListWidget> {
     }
 
     eventBus.on<SelectViewEvent>().listen((event) {
+      setState(() {
+        _jobs.clear();
+      });
       _getJobs(folder, event.view.name);
     });
   }
 
   void _getJobs(String folder, String view) async {
     logger.i('_JobsListWidgetState#_getJobs(), folder=$folder, view=$view');
-    setState(() {
-      _jobs.clear();
-    });
     try {
       var jobs = await jenkinsClient.getJobs(view: view);
       logger.i('_JobsListWidgetState#_getJobs()#jobs: $jobs');
@@ -55,7 +55,7 @@ class _JobsListWidgetState extends State<JobsListWidget> {
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
-        shrinkWrap: true,
+        shrinkWrap: false,
         itemCount: _jobs.length,
         itemBuilder: (context, index) {
           return Card(

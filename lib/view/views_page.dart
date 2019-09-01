@@ -15,13 +15,21 @@ class ViewsPage extends StatefulWidget {
 }
 
 class _ViewsPageState extends State<ViewsPage> {
-  _ViewsPageState();
+  var _view = 'all';
+
+  _ViewsPageState() {
+    eventBus.on<SelectViewEvent>().listen((event) {
+      setState(() {
+        _view = event.view.name;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text("${widget.title} - $_view"),
       ),
       body: JobsListWidget(),
       floatingActionButton: BottomSheetFloatingActionButton(),
@@ -37,8 +45,7 @@ class BottomSheetFloatingActionButton extends StatefulWidget {
 
 class _BottomSheetFloatingActionButtonState
     extends State<BottomSheetFloatingActionButton> {
-  PersistentBottomSheetController _bottomSheetController;
-  var iconData = Icons.arrow_upward;
+  BuildContext _context;
 
   _BottomSheetFloatingActionButtonState() {
     eventBus.on<SelectViewEvent>().listen((event) {
@@ -47,38 +54,24 @@ class _BottomSheetFloatingActionButtonState
   }
 
   _closeBottomSheet() {
-    _bottomSheetController.close();
-    _bottomSheetController = null;
+    Navigator.pop(_context);
   }
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {
-        if (_bottomSheetController != null) {
-          logger.d(
-              '_BottomSheetFloatingActionButtonState#_bottomSheetController',
-              _bottomSheetController);
-          _closeBottomSheet();
-        } else {
-          _bottomSheetController = showBottomSheet(
-              context: context,
-              builder: (context) => Container(
-                    child: ViewsWidget(),
-                  ));
-          setState(() {
-            iconData = Icons.arrow_downward;
-          });
-          _bottomSheetController.closed.then((value) {
-            logger.d('close bottom sheet', value);
-            setState(() {
-              iconData = Icons.arrow_upward;
+      onPressed: () async {
+        showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              _context = context;
+              return Container(
+                child: ViewsWidget(),
+              );
             });
-          });
-        }
       },
       tooltip: 'Show Views',
-      child: Icon(iconData),
+      child: Icon(Icons.category),
     );
   }
 }

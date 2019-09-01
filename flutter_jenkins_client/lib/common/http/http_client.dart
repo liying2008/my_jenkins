@@ -12,9 +12,8 @@ class HttpClient {
     }
     return BaseOptions(
       baseUrl: jenkinsClient.url,
-      connectTimeout: 5000,
-      receiveTimeout: 10000,
-      // 5s
+//      connectTimeout: 5000,
+//      receiveTimeout: 10000,
       headers: {
         HttpHeaders.authorizationHeader: EnDecode.encodeBasicAuthToken(
             jenkinsClient.username, jenkinsClient.password),

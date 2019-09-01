@@ -46,32 +46,31 @@ class _ViewsWidgetState extends State<ViewsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: <BoxShadow>[
-          new BoxShadow(
-            color: const Color(0x80000000),
-            offset: new Offset(0.0, 10.0),
-            blurRadius: 20.0,
-          ),
-        ],
-      ),
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: _views.length,
-        itemBuilder: (context, index) {
-          return Card(
-            child: ListTile(
-                title: Text(_views[index].name),
-                leading: Icon(Icons.category),
-                subtitle: Text(_views[index].description ?? ''),
-                onTap: () {
-                  _selectView(index);
-                }),
-          );
-        },
-      ),
-    );
+    const radius = Radius.circular(20.0);
+    return ClipRRect(
+        borderRadius: BorderRadius.only(topLeft: radius, topRight: radius),
+        child: Container(
+            color: Colors.white,
+            child: Column(children: [
+              ListTile(title: Center(child: Text("All Views"))),
+              Expanded(
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  itemCount: _views.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                        dense: true,
+                        title: Text(_views[index].name),
+                        leading: Icon(Icons.category),
+                        subtitle: Text(_views[index].description ?? ''),
+                        onTap: () {
+                          _selectView(index);
+                        });
+                  },
+                  separatorBuilder: (BuildContext context, int index) =>
+                      const Divider(),
+                ),
+              )
+            ])));
   }
 }
