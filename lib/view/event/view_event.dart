@@ -1,4 +1,4 @@
-import 'package:flutter_jenkins_client/view.dart';
+import 'package:flutter_jenkins_client/model/view.dart';
 
 class SelectViewEvent {
   View view;

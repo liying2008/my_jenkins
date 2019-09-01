@@ -1,9 +1,9 @@
-import 'package:flutter_jenkins_client/jenkins_object.dart';
+import 'package:flutter_jenkins_client/model/jenkins_object.dart';
 
 class Folder extends JenkinsObject {
   final String name;
 
-  Folder({String ldClass, this.name}) : super(ldClass);
+  Folder({String ldClass, this.name}) : super(ldClass:ldClass);
 
   factory Folder.fromJson(Map<String, dynamic> json) {
     return Folder(

@@ -1,4 +1,4 @@
-import 'package:flutter_jenkins_client/jenkins_object.dart';
+import 'package:flutter_jenkins_client/model/jenkins_object.dart';
 
 class View extends JenkinsObject {
   final String name;
@@ -6,7 +6,7 @@ class View extends JenkinsObject {
   final String description;
 
   View({String ldClass, this.name, this.url, this.description})
-      : super(ldClass);
+      : super(ldClass:ldClass);
 
   factory View.fromJson(Map<String, dynamic> json) {
     return View(

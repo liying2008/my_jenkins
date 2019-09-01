@@ -37,7 +37,7 @@ void main() {
 
   test('get job 1', () async {
     final jenkinsClient = JenkinsClient(JENKINS_URL, USERNAME, PASSWORD);
-    final job = await jenkinsClient.getJob('Pipeline2');
-    print(job);
+    final jobDetails = await jenkinsClient.getJob('Pipeline2');
+    print(jobDetails);
   });
 }

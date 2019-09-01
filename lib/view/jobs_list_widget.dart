@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_jenkins_client/job.dart';
+import 'package:flutter_jenkins_client/model/job.dart';
 import 'package:my_jenkins/global/event/event_bus.dart';
 import 'package:my_jenkins/global/tool/jenkins_client.dart';
 import 'package:my_jenkins/global/tool/logger.dart';
+import 'package:my_jenkins/job/job_details_page.dart';
 import 'package:my_jenkins/view/event/view_event.dart';
 
 class JobsListWidget extends StatefulWidget {
@@ -63,7 +64,12 @@ class _JobsListWidgetState extends State<JobsListWidget> {
                 title: Text(_jobs[index].name),
                 leading: Icon(Icons.schedule),
                 subtitle: Text(_jobs[index].fullName ?? ''),
-                onTap: () {}),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (BuildContext context) {
+                    return JobDetailsPage(job: _jobs[index]);
+                  }));
+                }),
           );
         },
       ),

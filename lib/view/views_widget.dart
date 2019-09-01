@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_jenkins_client/view.dart';
+import 'package:flutter_jenkins_client/model/view.dart';
 import 'package:my_jenkins/global/event/event_bus.dart';
 import 'package:my_jenkins/global/tool/jenkins_client.dart';
 import 'package:my_jenkins/global/tool/logger.dart';

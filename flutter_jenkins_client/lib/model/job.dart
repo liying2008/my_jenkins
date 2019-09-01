@@ -1,4 +1,4 @@
-import 'package:flutter_jenkins_client/jenkins_object.dart';
+import 'package:flutter_jenkins_client/model/jenkins_object.dart';
 
 class Job extends JenkinsObject {
   final String name;
@@ -7,7 +7,7 @@ class Job extends JenkinsObject {
   final String color;
 
   Job({String ldClass, this.name, this.url, this.fullName, this.color})
-      : super(ldClass);
+      : super(ldClass:ldClass);
 
   factory Job.fromJson(Map<String, dynamic> json) {
     return Job(

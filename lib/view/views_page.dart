@@ -6,9 +6,9 @@ import 'package:my_jenkins/view/jobs_list_widget.dart';
 import 'package:my_jenkins/view/views_widget.dart';
 
 class ViewsPage extends StatefulWidget {
-  final String title;
+  final String title = 'Jobs List';
 
-  ViewsPage({Key key, @required this.title}) : super(key: key);
+  ViewsPage({Key key}) : super(key: key);
 
   @override
   _ViewsPageState createState() => _ViewsPageState();

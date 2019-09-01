@@ -4,8 +4,9 @@ import 'dart:convert';
 
 import 'package:flutter_jenkins_client/common/errors.dart';
 import 'package:flutter_jenkins_client/common/http/http_client.dart';
-import 'package:flutter_jenkins_client/job.dart';
-import 'package:flutter_jenkins_client/view.dart';
+import 'package:flutter_jenkins_client/model/job.dart';
+import 'package:flutter_jenkins_client/model/job_details.dart';
+import 'package:flutter_jenkins_client/model/view.dart';
 
 class JenkinsClient {
   final String url;
@@ -66,7 +67,7 @@ class JenkinsClient {
     return map;
   }
 
-  Future<Job> getJob(String name) async {
+  Future<JobDetails> getJob(String name) async {
     print('jenkins_client#getJob()');
     var params = {'tree': '*'};
     var resp = await HttpClient.get(this, '/job/$name/api/json', params);
@@ -74,6 +75,6 @@ class JenkinsClient {
       throw FetchDataFailedError("get job $name failed!");
     }
     var data = json.decode(resp.data);
-    return Job.fromJson(data);
+    return JobDetails.fromJson(data);
   }
 }
