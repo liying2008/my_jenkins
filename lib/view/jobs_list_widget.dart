@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jenkins_client/model/job.dart';
+import 'package:my_jenkins/common/widget/status_icon.dart';
 import 'package:my_jenkins/global/event/event_bus.dart';
 import 'package:my_jenkins/global/tool/jenkins_client.dart';
 import 'package:my_jenkins/global/tool/logger.dart';
@@ -62,7 +63,7 @@ class _JobsListWidgetState extends State<JobsListWidget> {
           return Card(
             child: ListTile(
                 title: Text(_jobs[index].name),
-                leading: Icon(Icons.schedule),
+                leading: StatusIcon(_jobs[index].color),
                 subtitle: Text(_jobs[index].fullName ?? ''),
                 onTap: () {
                   Navigator.push(context,
