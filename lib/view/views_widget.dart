@@ -16,14 +16,15 @@ class _ViewsWidgetState extends State<ViewsWidget> {
   var _loadingText = '';
   var _views = <View>[];
 
-  _ViewsWidgetState() {
+  @override
+  void initState() {
     _getAllViews();
+    super.initState();
   }
 
-  void _getAllViews() async {
+  void _getAllViews() {
     logger.i('_ViewsWidgetState#_getAllViews()');
-    try {
-      var views = await jenkinsClient.getViews();
+    jenkinsClient.getViews().then((views) {
       logger.i('_ViewsWidgetState#_getAllViews()#views: $views');
       setState(() {
         views.forEach((name, view) {
@@ -31,12 +32,12 @@ class _ViewsWidgetState extends State<ViewsWidget> {
         });
         _loadingText = '';
       });
-    } catch (e) {
+    }).catchError((e) {
       logger.i('_ViewsWidgetState#_getAllViews()#e: $e');
       setState(() {
         _loadingText = 'ERROR!';
       });
-    }
+    });
   }
 
   _selectView(index) {

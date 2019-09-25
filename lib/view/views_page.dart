@@ -31,7 +31,9 @@ class _ViewsPageState extends State<ViewsPage> {
       appBar: AppBar(
         title: Text("${widget.title} - $_view"),
       ),
-      body: JobsListWidget(),
+      body: JobsListWidget(
+        view: _view,
+      ),
       floatingActionButton: BottomSheetFloatingActionButton(),
     );
   }

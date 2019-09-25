@@ -14,43 +14,39 @@ class JobsListWidget extends StatefulWidget {
   JobsListWidget({Key key, this.folder, this.view}) : super(key: key);
 
   @override
-  _JobsListWidgetState createState() =>
-      _JobsListWidgetState(folder: folder, view: view);
+  _JobsListWidgetState createState() => _JobsListWidgetState();
 }
 
 class _JobsListWidgetState extends State<JobsListWidget> {
-  final String folder;
-  final String view;
   var _jobs = <Job>[];
 
-  _JobsListWidgetState({this.folder, this.view}) {
-    if (view == null) {
-      _getJobs(folder, 'all');
-    } else {
-      _getJobs(folder, view);
-    }
-
+  _JobsListWidgetState() {
     eventBus.on<SelectViewEvent>().listen((event) {
       setState(() {
         _jobs.clear();
       });
-      _getJobs(folder, event.view.name);
+      _getJobs(widget.folder, event.view.name);
     });
   }
 
-  void _getJobs(String folder, String view) async {
+  @override
+  void initState() {
+    _getJobs(widget.folder, widget.view);
+    super.initState();
+  }
+
+  void _getJobs(String folder, String view) {
     logger.i('_JobsListWidgetState#_getJobs(), folder=$folder, view=$view');
-    try {
-      var jobs = await jenkinsClient.getJobs(view: view);
+    jenkinsClient.getJobs(view: view).then((jobs) {
       logger.i('_JobsListWidgetState#_getJobs()#jobs: $jobs');
       setState(() {
         jobs.forEach((name, job) {
           _jobs.add(job);
         });
       });
-    } catch (e) {
+    }, onError: (e) {
       logger.i('_JobsListWidgetState#_getJobs()#e: $e');
-    }
+    });
   }
 
   @override
@@ -63,7 +59,9 @@ class _JobsListWidgetState extends State<JobsListWidget> {
           return Card(
             child: ListTile(
                 title: Text(_jobs[index].name),
-                leading: StatusIcon(_jobs[index].color),
+                leading: StatusIcon(
+                  color: _jobs[index].color,
+                ),
                 subtitle: Text(_jobs[index].fullName ?? ''),
                 onTap: () {
                   Navigator.push(context,

@@ -5,14 +5,13 @@ import 'package:my_jenkins/global/tool/logger.dart';
 class StatusIcon extends StatefulWidget {
   final String color;
 
-  StatusIcon(this.color);
+  StatusIcon({@required this.color});
 
   @override
-  _StatusIconState createState() => _StatusIconState(this.color);
+  _StatusIconState createState() => _StatusIconState();
 }
 
 class _StatusIconState extends State<StatusIcon> with TickerProviderStateMixin {
-  final String color;
   bool _isAnime = false;
   Color _mtrColor = Colors.deepPurple;
   bool _isUnknownStatus = false;
@@ -28,23 +27,10 @@ class _StatusIconState extends State<StatusIcon> with TickerProviderStateMixin {
     "red": Colors.red,
   };
 
-  _StatusIconState(this.color) {
-    logger.i("_StatusIconState#color:${this.color}");
-    if (this.color == null || this.color.isEmpty) {
-      this._isUnknownStatus = true;
-    } else {
-      String realColor = color;
-      if (this.color.endsWith('_anime')) {
-        this._isAnime = true;
-        final index = this.color.indexOf('_anime');
-        realColor = this.color.substring(0, index);
-      }
-      this._mtrColor = color2Mtr[realColor];
-    }
-  }
-
   @override
   void initState() {
+    // 初始化颜色数据
+    _initColorData();
     super.initState();
     // TODO 动画待调试
     controller = AnimationController(
@@ -60,6 +46,21 @@ class _StatusIconState extends State<StatusIcon> with TickerProviderStateMixin {
     if (_isAnime) {
       // 启动动画
       controller.repeat(reverse: true);
+    }
+  }
+
+  _initColorData() {
+    logger.i("_StatusIconState#color:${widget.color}");
+    if (widget.color == null || widget.color.isEmpty) {
+      this._isUnknownStatus = true;
+    } else {
+      String realColor = widget.color;
+      if (widget.color.endsWith('_anime')) {
+        this._isAnime = true;
+        final index = widget.color.indexOf('_anime');
+        realColor = widget.color.substring(0, index);
+      }
+      this._mtrColor = color2Mtr[realColor];
     }
   }
 
