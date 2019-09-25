@@ -60,6 +60,7 @@ class _JobsListWidgetState extends State<JobsListWidget> {
             child: ListTile(
                 title: Text(_jobs[index].name),
                 leading: StatusIcon(
+                  ldClass: _jobs[index].ldClass,
                   color: _jobs[index].color,
                 ),
                 subtitle: Text(_jobs[index].fullName ?? ''),
